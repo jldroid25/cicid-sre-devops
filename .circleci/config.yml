@@ -3,8 +3,31 @@ defaults: &defaults
   # use the the Docker Executor
   docker:
     # Use a light weight image | we can use
-      - image: circleci/node:13.8.0
+      - image: amazon/aws-cli
   working_directory: ~/project
       
 # Use the latest 2.1 version of CircleCI pipeline process engine. 
 version: 2.1
+
+jobs:
+  create_infrastructure:
+   # Using the AWS Docker Image Aliases above.
+    <<: &defaults
+    steps:
+      # Execute the couldFormation template to create the infrastrucre code
+      - checkout
+      - run: 
+          name: Ensure Backend infrastrucre Exist
+          command: |
+            aws cloudformation deploy --template-file template.yml --stack-name sredevopstack
+
+
+
+workflows:
+  SREDevops01_WF:
+
+  jobs:
+    
+    # Run job to create the infrastructure
+    - create_infrastructure
+
