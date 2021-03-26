@@ -11,7 +11,9 @@ jobs:
       - run: 
           name: Smoke Test 
           command: |
-            URL="http://ec2-18-220-43-92.us-east-2.compute.amazonaws.com/"
+            #URL="http://ec2-18-220-43-92.us-east-2.compute.amazonaws.com/"
+            URL=" http://cashdatastack.com/"
+           
             if curl -s --head ${URL} # test if ec2 public endpoint exists
             then 
              return 0
