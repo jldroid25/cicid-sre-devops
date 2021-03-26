@@ -84,8 +84,8 @@ jobs:
             aws cloudformation deploy  --template-file template.yml  --stack-name sredevopstack
      # creating a Rollback when code return 1  delete aws stack
       - run: return 1
-      - destroy_environment
-        when: on_fail
+        - destroy_environment
+          when: on_fail
         
 
 workflows:
