@@ -11,6 +11,24 @@ commands:
             aws cloudformation delete-stack --stack-name sredevopstack-${CIRCLE_WORKFLOW_ID}
             
 jobs:
+  
+  create_infrastructure:
+    # Using the AWS Docker Image Aliases above.
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      # Execute the couldFormation template to create the infrastrucre code
+      - checkout
+      - run: 
+          name: Ensure Backend infrastrucre Exist
+          # Gotchas: make sure file template.yml is in project home dir. not a sub folder.
+          command: | 
+            aws cloudformation deploy  --template-file template.yml  --stack-name sredevopstack
+         # creating a Rollback when code return 1  delete aws stack
+      - run: return 1
+      - destroy_environment
+        when: on_fail
+    
   # here we are simulating a rollback/delete green environment on failure
   # we go and delete/destroy the infra. stack on aws
   # smoke_test_2:
@@ -70,22 +88,6 @@ jobs:
   #         command: |
   #           ansible-playbook -i inventory playbook.yml 
 
-  create_infrastructure:
-    # Using the AWS Docker Image Aliases above.
-    docker:
-      - image: amazon/aws-cli
-    steps:
-      # Execute the couldFormation template to create the infrastrucre code
-      - checkout
-      - run: 
-          name: Ensure Backend infrastrucre Exist
-          # Gotchas: make sure file template.yml is in project home dir. not a sub folder.
-          command: | 
-            aws cloudformation deploy  --template-file template.yml  --stack-name sredevopstack
-     # creating a Rollback when code return 1  delete aws stack
-      - run: return 1
-        - destroy_environment
-            when: on_fail
         
 
 workflows:
