@@ -2,30 +2,48 @@
 version: 2.1
 
 jobs:
-  # a job to configure an Ec2 instance & copy production files
-  configure_infrastructure:
-    # A docker Image with python installed which is needed for ansible to run.
-    docker:
-      - image: python:3.9-alpine3.13
+  # A smoke test job to verify on something example is server up & running
+  smoke_test:
+    docker: 
+      - image: alpine:latest
     steps:
-      # A Filter to only run this job on master branch
-      - checkout
-      # our ssh key-pair for our EC2 instance (see project setting)
-      # This ensures ansible can access our Ec2 instance
-      - add_ssh_keys:
-          fingerprints: ["e9:0d:1e:7a:e7:c5:6a:88:f2:4d:f9:f3:28:98:f0:e5"]
-
-         # Install Dependencies 
-      - run:
-           name: Install Dependencies
-           command: | 
-              apk add --update ansible # install the dependencies needed for playbook
-
-        # Executing ansible playbook
-      - run:
-          name: Configure server
+      - run: apk add --update curl 
+      - run: 
+          name: Smoke Test 
           command: |
-            ansible-playbook -i inventory playbook.yml 
+            url="http://ec2-18-220-43-92.us-east-2.compute.amazonaws.com/"
+            if curl -s --head ${URL} # test if ec2 public endpoint exists
+            then 
+             return 0
+            else 
+             return 1
+             fi 
+
+   
+  # # a job to configure an Ec2 instance & copy production files
+  # configure_infrastructure:
+  #   # A docker Image with python installed which is needed for ansible to run.
+  #   docker:
+  #     - image: python:3.9-alpine3.13
+  #   steps:
+  #     # A Filter to only run this job on master branch
+  #     - checkout
+  #     # our ssh key-pair for our EC2 instance (see project setting)
+  #     # This ensures ansible can access our Ec2 instance
+  #     - add_ssh_keys:
+  #         fingerprints: ["e9:0d:1e:7a:e7:c5:6a:88:f2:4d:f9:f3:28:98:f0:e5"]
+
+  #        # Install Dependencies 
+  #     - run:
+  #          name: Install Dependencies
+  #          command: | 
+  #             apk add --update ansible # install the dependencies needed for playbook
+
+  #       # Executing ansible playbook
+  #     - run:
+  #         name: Configure server
+  #         command: |
+  #           ansible-playbook -i inventory playbook.yml 
 
   create_infrastructure:
     # Using the AWS Docker Image Aliases above.
@@ -45,6 +63,10 @@ workflows:
     jobs:
       # Run the jobs 
       - create_infrastructure
-      - configure_infrastructure:
+      - smoke_test:
           requires:
             - create_infrastructure
+            
+      # - configure_infrastructure:
+      #     requires:
+      #       - create_infrastructure
