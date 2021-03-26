@@ -2,6 +2,30 @@
 version: 2.1
 
 jobs:
+  configure_infrastructure:
+    # A docker Image with python installed which is needed for ansible to run.
+    docker:
+      - image: python:3.7-alpine.11
+    steps:
+      # A Filter to only run this job on master branch
+      - checkout
+      # our ssh key-pair for our EC2 instance (see project setting)
+      # This ensures ansible can access our Ec2 instance
+      - add_ssh_keys:
+          fingerprints: ["fd:93:12:08:32:33:1d:a6:3e:32:8f:04:dc:24:a7:b2"]
+
+         # Install Dependencies 
+      - run:
+           name: Install Dependencies
+           command: | 
+              apk add --update ansible # install the dependencies needed for playbook
+
+        # Executing ansible playbook
+      - run:
+          name: Configure server
+          command: |
+            ansible-playbook -i inventory playbook.yml
+
   create_infrastructure:
     # Using the AWS Docker Image Aliases above.
     docker:
@@ -11,11 +35,15 @@ jobs:
       - checkout
       - run: 
           name: Ensure Backend infrastrucre Exist
+          # Gotchas: make sure file template.yml is in project home dir. not a sub folder.
           command: | 
             aws cloudformation deploy  --template-file template.yml  --stack-name sredevopstack
 
 workflows:
   SREDevops01_WF:
     jobs:
-      # Run job to create the infrastructure
+      # Run the jobs 
       - create_infrastructure
+      - configure_infrastructure
+          requires:
+            create_infrastructure

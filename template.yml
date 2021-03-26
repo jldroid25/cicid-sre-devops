@@ -1,12 +1,20 @@
 Resources:
-# Create the Ec2
+
+#Gotchas: Check for typos, Capital letters etc.  
+# Also add the following ENV Vars & values  from  aws user credential (programatic access) (never root)
+# in Circleci Project Setting  AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, & AWS_DEFAULT_REGION
+
+# Create the Ec2, 
   Ec2Instance:
     Type: 'AWS::EC2::Instance'
     Properties:
+      # InstanceTy is required else it throws error
       InstanceType: "t2.micro"
       SecurityGroups:
         - !Ref InstanceSecurityGroup
       KeyName: devops_01
+      # Gotchas: make sure ami amazon-linux is from same region as keyName,
+      # &  it matches docker executor in config file i.e "amazon/ec2" 
       ImageId: 'ami-01e7ca2ef94a0ae86'
       Tags:
         - Key: "Name"
