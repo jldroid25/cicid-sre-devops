@@ -1,26 +1,49 @@
 # Use the latest 2.1 version of CircleCI pipeline process engine. 
 version: 2.1
 
-jobs:
-  # A smoke test job to verify on something example is server up & running
-  smoke_test:
-    docker: 
-      - image: alpine:latest
+# Using a  custom command for reusabel code
+commands:
+  destroy_environment:
     steps:
-      - run: apk add --update curl 
-      - run: 
-          name: Smoke Test 
+      - run:
+          name: Destroy environment
           command: |
-            #URL="http://ec2-18-220-43-92.us-east-2.compute.amazonaws.com/"
-            URL=" http://cashdatastack.com/"
+            aws cloudformation delete-stack --stack-name sredevopstack-${CIRCLE_WORKFLOW_ID}
+            
+jobs:
+  # here we are simulating a rollback when some service fail
+  # we go and delete/destroy the infra. stack on aws
+  smoke_test_2:
+    docker: 
+      - image: amazon/aws-cli
+    steps:
+      - checkout:
+      - run: 
+          name: simulate error
+          commands: | 
+            return 1  # simulate an error, cause the job to fail
+      - destroy_environment
+        when: on_fail 
+      
+  # A smoke test job to verify on something example is server up & running
+  # smoke_test_1:
+  #   docker: 
+  #     - image: alpine:latest
+  #   steps:
+  #     - run: apk add --update curl 
+  #     - run: 
+  #         name: Smoke Test 
+  #         command: |
+  #           #URL="http://ec2-18-220-43-92.us-east-2.compute.amazonaws.com/"
+  #           URL=" http://cashdatastack.com/"
            
-            if curl -s --head ${URL} # test if ec2 public endpoint exists
-            then 
-             return 0
-            else 
-             return 1
-             fi 
-
+  #           if curl -s --head ${URL} # test if ec2 public endpoint exists
+  #           then 
+  #            return 0
+  #           else 
+  #            return 1
+  #            fi 
+   
    
   # # a job to configure an Ec2 instance & copy production files
   # configure_infrastructure:
@@ -65,7 +88,12 @@ workflows:
     jobs:
       # Run the jobs 
       - create_infrastructure
-      - smoke_test:
+
+      # - smoke_test_1:
+      #     requires:
+      #       - create_infrastructure
+      
+      - smoke_test_2:
           requires:
             - create_infrastructure
 
