@@ -19,7 +19,7 @@ jobs:
           command: |
             aws cloudformation deploy \
              --template-file template.yml \ 
-             --stack-name sreDevopStack
+             --stack-name sredevopstack
 
 workflows:
   SREDevops01_WF:
