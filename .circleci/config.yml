@@ -17,7 +17,7 @@ jobs:
       - run: 
           name: Ensure Backend infrastrucre Exist
           command: |
-           cd "~/Desktop/DEVOPS/Courses/CICD/cd/remoteAns/cicid-sre-devops/infrastr/"
+           cd "~/remoteAns/cicid-sre-devops/infrastr/"
             aws cloudformation deploy  --template-file template.yml  --stack-name sredevopstack
 
 workflows:
