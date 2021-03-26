@@ -1,24 +1,24 @@
 # Infrastructure creation
 Resources:
 # Create the Ec2
-EC2Instance:
-  type: 'AWS::EC2::Instance'
-  Properties:
-    SecurityGroup:
-      - !Ref InstanceSecurityGroup
-    KeyName: devops_01
-    ImageId: 'ami-01e7ca2ef94a0ae86'
-  Tags:
-     - Key: Name
-       Value: "ec2-datapp" 
+  EC2Instance:
+    type: 'AWS::EC2::Instance'
+    Properties:
+      SecurityGroup:
+        - !Ref InstanceSecurityGroup
+      KeyName: devops_01
+      ImageId: 'ami-01e7ca2ef94a0ae86'
+    Tags:
+      - Key: Name
+        Value: "ec2-datapp" 
 
-# Create the SecurityGroup - Enable SSH via port 22
-InstanceSecurityGroup:
-  Type: 'AWS::EC2::SecurityGroup'
-  Properties:
-    GroupDescription: Enable SSH access via port 22
-    SecurityGroupIngress: 
-      - IpProtocol: tcp 
-        FromPort: '22'
-        ToPort: '22'
-        CidrIp: 0.0.0.0/0
+  # Create the SecurityGroup - Enable SSH via port 22
+  InstanceSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: Enable SSH access via port 22
+      SecurityGroupIngress: 
+        - IpProtocol: tcp 
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: 0.0.0.0/0
