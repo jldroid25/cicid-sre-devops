@@ -6,7 +6,7 @@ Resources:
       SecurityGroups:
         - !Ref InstanceSecurityGroup
       KeyName: devops_01
-      ImageId: 'ami-089c6f2e3866f0f14'
+      ImageId: 'ami-09135e71dc2619458'
     
   # Create the SecurityGroup - Enable SSH via port 22
   InstanceSecurityGroup:

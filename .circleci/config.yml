@@ -1,16 +1,11 @@
-# using Anchor & Aliases to reduce code repetion
-defaults: &defaults
-  docker:
-    - image: amazon/aws-cli
-  working_directory: ~/project
-      
 # Use the latest 2.1 version of CircleCI pipeline process engine. 
 version: 2.1
 
 jobs:
   create_infrastructure:
     # Using the AWS Docker Image Aliases above.
-    <<: *defaults
+    docker:
+      - image: amazon/aws-cli
     steps:
       # Execute the couldFormation template to create the infrastrucre code
       - checkout
