@@ -1,9 +1,7 @@
 # using Anchor & Aliases to reduce code repetion
 defaults: &defaults
-  # use the the Docker Executor
   docker:
-    # Use a light weight image | we can use
-      - image: amazon/aws-cli
+    - image: amazon/aws-cli
   working_directory: ~/project
       
 # Use the latest 2.1 version of CircleCI pipeline process engine. 
@@ -11,7 +9,7 @@ version: 2.1
 
 jobs:
   create_infrastructure:
-   # Using the AWS Docker Image Aliases above.
+    # Using the AWS Docker Image Aliases above.
     <<: *defaults
     steps:
       # Execute the couldFormation template to create the infrastrucre code
@@ -19,15 +17,12 @@ jobs:
       - run: 
           name: Ensure Backend infrastrucre Exist
           command: |
-            aws cloudformation deploy --template-file template.yml --stack-name sreDevopStack
-
-
+            aws cloudformation deploy
+             --template-file template.yml 
+             --stack-name sreDevopStack
 
 workflows:
   SREDevops01_WF:
-
-  jobs:
-    
-    # Run job to create the infrastructure
-    - create_infrastructure
-
+    jobs:
+      # Run job to create the infrastructure
+      - create_infrastructure
