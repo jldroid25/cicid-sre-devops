@@ -7,10 +7,7 @@ Resources:
         - !Ref InstanceSecurityGroup
       KeyName: devops_01
       ImageId: 'ami-01e7ca2ef94a0ae86'
-    Tags:
-      - Key: Name
-        Value: "ec2-datapp" 
-
+    
   # Create the SecurityGroup - Enable SSH via port 22
   InstanceSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
