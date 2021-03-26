@@ -18,7 +18,6 @@ jobs:
           name: Ensure Backend infrastrucre Exist
           command: | 
             aws cloudformation deploy  --template-file template.yml  --stack-name sredevopstack
-            aws cloudformation describe-stack-events --stack-name sredevopstack
 
 workflows:
   SREDevops01_WF:
