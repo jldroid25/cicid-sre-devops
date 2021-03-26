@@ -45,5 +45,5 @@ workflows:
       # Run the jobs 
       - create_infrastructure
       - configure_infrastructure:
-          equires:
+          requires:
             - create_infrastructure
