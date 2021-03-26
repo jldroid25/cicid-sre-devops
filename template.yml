@@ -3,7 +3,7 @@ Resources:
   Ec2Instance:
     Type: 'AWS::EC2::Instance'
     Properties:
-      SecurityGroup:
+      SecurityGroups:
         - !Ref InstanceSecurityGroup
       KeyName: devops_01
       ImageId: 'ami-01e7ca2ef94a0ae86'
