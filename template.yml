@@ -3,10 +3,11 @@ Resources:
   Ec2Instance:
     Type: 'AWS::EC2::Instance'
     Properties:
+      InstanceType: "t2.micro"
       SecurityGroups:
         - !Ref InstanceSecurityGroup
       KeyName: devops_01
-      ImageId: 'ami-09135e71dc2619458'
+      ImageId: 'ami-01e7ca2ef94a0ae86'
     
   # Create the SecurityGroup - Enable SSH via port 22
   InstanceSecurityGroup:
