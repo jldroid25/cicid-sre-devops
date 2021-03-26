@@ -1,7 +1,7 @@
 Resources:
 # Create the Ec2
   Ec2Instance:
-    type: 'AWS::EC2::Instance'
+    Type: 'AWS::EC2::Instance'
     Properties:
       SecurityGroup:
         - !Ref InstanceSecurityGroup
