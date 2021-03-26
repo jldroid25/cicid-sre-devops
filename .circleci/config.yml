@@ -20,7 +20,7 @@ jobs:
       - checkout:
       - run: 
           name: simulate error
-          commands: | 
+          command: | 
             return 1  # simulate an error, cause the job to fail
       - destroy_environment
         when: on_fail 
