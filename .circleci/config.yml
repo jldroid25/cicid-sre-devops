@@ -12,7 +12,7 @@ version: 2.1
 jobs:
   create_infrastructure:
    # Using the AWS Docker Image Aliases above.
-    <<: &defaults
+    <<: *defaults
     steps:
       # Execute the couldFormation template to create the infrastrucre code
       - checkout
