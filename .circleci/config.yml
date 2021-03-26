@@ -6,8 +6,7 @@ jobs:
   configure_infrastructure:
     # A docker Image with python installed which is needed for ansible to run.
     docker:
-      #- image: python:3.9-alpine3.13
-      - image: python:3.7-alpine3.11
+      - image: python:3.9-alpine3.13
     steps:
       # A Filter to only run this job on master branch
       - checkout
