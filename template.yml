@@ -23,5 +23,5 @@ Resources:
           ToPort: '22'
           CidrIp: 0.0.0.0/0
       Tags:
-        - Key: name: "Name"
+        - Key: "Name"
           Value: "SSH for Canad-ec2"
