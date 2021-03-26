@@ -1,6 +1,5 @@
 --- 
 - name: Setting up a Web Server in EC2 
-  become: yes
   hosts: canad-ec2
   user: ubuntu
   roles:

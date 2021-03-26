@@ -2,6 +2,7 @@
 version: 2.1
 
 jobs:
+  # a job to configure an Ec2 instance & copy production files
   configure_infrastructure:
     # A docker Image with python installed which is needed for ansible to run.
     docker:
@@ -24,7 +25,7 @@ jobs:
       - run:
           name: Configure server
           command: |
-            ansible-playbook -i inventory playbook.yml -vvvv
+            ansible-playbook -i inventory playbook.yml 
 
   create_infrastructure:
     # Using the AWS Docker Image Aliases above.
