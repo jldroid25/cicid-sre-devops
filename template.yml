@@ -1,7 +1,6 @@
-# Infrastructure creation
 Resources:
 # Create the Ec2
-  EC2Instance:
+  Ec2Instance:
     type: 'AWS::EC2::Instance'
     Properties:
       SecurityGroup:
