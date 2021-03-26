@@ -19,7 +19,7 @@ jobs:
       - run: 
           name: Ensure Backend infrastrucre Exist
           command: |
-            aws cloudformation deploy --template-file template.yml --stack-name sredevopstack
+            aws cloudformation deploy --template-file template.yml --stack-name sreDevopStack
 
 
 
