@@ -12,7 +12,7 @@ jobs:
       # our ssh key-pair for our EC2 instance (see project setting)
       # This ensures ansible can access our Ec2 instance
       - add_ssh_keys:
-          fingerprints: ["fd:93:12:08:32:33:1d:a6:3e:32:8f:04:dc:24:a7:b2"]
+          fingerprints: ["15:70:3a:ca:e3:38:da:c8:67:a1:c2:40:f1:66:e9:07"]
 
          # Install Dependencies 
       - run:
