@@ -28,12 +28,13 @@ jobs:
             aws cloudformation deploy  --template-file template.yml  --stack-name sredevopstack
      
       # creating a Rollback when code return 1  delete aws stack
-      - run: 
-          command: |
-            return 1
-      - destroy_environment
+      # - run: 
+      #     command: |
+      #       return 1
+      # - destroy_environment
         
-    #A smoke test job to verify on something example is server up & running
+    #A smoke test job to verify on something 
+    # example is server up & running
   smoke_test_1:
     docker: 
       - image: alpine:latest
@@ -65,32 +66,30 @@ jobs:
   #           return 1  # simulate an error, cause the job to fail
   #     - destroy_environment
          
-  # # a job to configure an Ec2 instance & copy production files
-  # configure_infrastructure:
-  #   # A docker Image with python installed which is needed for ansible to run.
-  #   docker:
-  #     - image: python:3.9-alpine3.13
-  #   steps:
-  #     # A Filter to only run this job on master branch
-  #     - checkout
-  #     # our ssh key-pair for our EC2 instance (see project setting)
-  #     # This ensures ansible can access our Ec2 instance
-  #     - add_ssh_keys:
-  #         fingerprints: ["e9:0d:1e:7a:e7:c5:6a:88:f2:4d:f9:f3:28:98:f0:e5"]
+  # a job to configure an Ec2 instance & copy production files
+  configure_infrastructure:
+    # A docker Image with python installed which is needed for ansible to run.
+    docker:
+      - image: python:3.9-alpine3.13
+    steps:
+      # A Filter to only run this job on master branch
+      - checkout
+      # our ssh key-pair for our EC2 instance (see project setting)
+      # This ensures ansible can access our Ec2 instance
+      - add_ssh_keys:
+          fingerprints: ["e9:0d:1e:7a:e7:c5:6a:88:f2:4d:f9:f3:28:98:f0:e5"]
 
-  #        # Install Dependencies 
-  #     - run:
-  #          name: Install Dependencies
-  #          command: | 
-  #             apk add --update ansible # install the dependencies needed for playbook
+         # Install Dependencies 
+      - run:
+           name: Install Dependencies
+           command: | 
+              apk add --update ansible # install the dependencies needed for playbook
 
-  #       # Executing ansible playbook
-  #     - run:
-  #         name: Configure server
-  #         command: |
-  #           ansible-playbook -i inventory playbook.yml 
-
-        
+        # Executing ansible playbook
+      - run:
+          name: Configure server
+          command: |
+            ansible-playbook -i inventory playbook.yml --private-key /Users/jimad12/Desktop/DEVOPS/Courses/CICD/cd/secretStuff/devops_01.pem 
 
 workflows:
   SREDevops01_WF:
@@ -98,14 +97,14 @@ workflows:
       # Run the jobs 
       - create_infrastructure
 
+      - configure_infrastructure:
+          requires:
+            - create_infrastructure
+
       - smoke_test_1:
           requires:
             - create_infrastructure
       
       # - smoke_test_2:
-      #     requires:
-      #       - create_infrastructure
-
-      # - configure_infrastructure:
       #     requires:
       #       - create_infrastructure
