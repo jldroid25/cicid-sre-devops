@@ -42,7 +42,9 @@
 - name: Executing node 
   shell: |
     pm2 start "/home/ubuntu/web/index.js"
-  #pm2 stop "/home/ubuntu/web/index.js"
+#pm2 stop "/home/ubuntu/web/index.js"
+
+    
   
 
   
