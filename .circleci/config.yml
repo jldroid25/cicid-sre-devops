@@ -23,10 +23,13 @@ jobs:
           # Gotchas: make sure file template.yml is in project home dir. not a sub folder.
           command: | 
             aws cloudformation deploy  --template-file template.yml  --stack-name sredevopstack
-            return 1
-      - destroy_environment
-        when: on_fail
-    
+     
+      # creating a Rollback when code return 1  delete aws stack
+      - run: 
+       - destroy_environment  
+         command: return 1
+         when: on_fail
+     
   # here we are simulating a rollback/delete green environment on failure
   # we go and delete/destroy the infra. stack on aws
   # smoke_test_2:
