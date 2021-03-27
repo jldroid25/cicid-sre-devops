@@ -26,9 +26,11 @@ jobs:
      
       # creating a Rollback when code return 1  delete aws stack
       - run: 
+      - destroy_environment  
          command: return 1
          when: on_fail
-      - destroy_environment  
+
+      
 
      
   # here we are simulating a rollback/delete green environment on failure
