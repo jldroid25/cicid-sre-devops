@@ -10,6 +10,8 @@ commands:
           command: |
             aws cloudformation delete-stack --stack-name sredevopstack
           when: on_fail
+      - run: 
+          command: echo "Rolling back to Green Server - Deleted Stack"
 
 jobs:
   create_infrastructure:
@@ -58,8 +60,8 @@ jobs:
       - run: 
           name: simulate error
           command: | 
-            return 1  # simulate an error, cause the job to fail
-      - destroy_environment
+           # return 1  # simulate an error, cause the job to fail
+      #- destroy_environment
         #when: on_fail 
          
   # # a job to configure an Ec2 instance & copy production files
