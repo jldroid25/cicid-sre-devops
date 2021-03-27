@@ -89,7 +89,7 @@ jobs:
       - run:
           name: Configure server
           command: |
-            ansible-playbook -i inventory playbook.yml --private-key /Users/jimad12/Desktop/DEVOPS/Courses/CICD/cd/secretStuff/devops_01.pem -vvvv
+            ansible-playbook -i inventory playbook.yml -vvvv
 
 workflows:
   SREDevops01_WF:
