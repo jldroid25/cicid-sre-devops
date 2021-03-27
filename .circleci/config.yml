@@ -28,8 +28,10 @@ jobs:
             aws cloudformation deploy  --template-file template.yml  --stack-name sredevopstack
      
       # creating a Rollback when code return 1  delete aws stack
-      # - run: return 1
-      # - destroy_environment
+       - run: 
+           command: |
+             return 1
+       - destroy_environment
         
     #A smoke test job to verify on something example is server up & running
   smoke_test_1:
@@ -52,17 +54,16 @@ jobs:
       
   # here we are simulating a rollback/delete green environment on failure
   # we go and delete/destroy the infra. stack on aws
-  smoke_test_2:
-    docker: 
-      - image: amazon/aws-cli
-    steps:
-      - checkout
-      - run: 
-          name: simulate error
-          command: | 
-           # return 1  # simulate an error, cause the job to fail
-      #- destroy_environment
-        #when: on_fail 
+  # smoke_test_2:
+  #   docker: 
+  #     - image: amazon/aws-cli
+  #   steps:
+  #     - checkout
+  #     - run: 
+  #         name: simulate error
+  #         command: | 
+  #           return 1  # simulate an error, cause the job to fail
+  #     - destroy_environment
          
   # # a job to configure an Ec2 instance & copy production files
   # configure_infrastructure:
@@ -101,9 +102,9 @@ workflows:
           requires:
             - create_infrastructure
       
-      - smoke_test_2:
-          requires:
-            - create_infrastructure
+      # - smoke_test_2:
+      #     requires:
+      #       - create_infrastructure
 
       # - configure_infrastructure:
       #     requires:
