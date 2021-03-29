@@ -107,13 +107,13 @@ jobs:
   #         aws cloudformation deploy --template-file bucket.yml --stack-name "${CIRCLE_WORKFLOW_ID:0:7}" --parameter-overrides PipelineId="${CIRCLE_WORKFLOW_ID:0:7}" --region us-east-2  
   #     - run: aws s3  sync . s3://"${CIRCLE_WORKFLOW_ID}" --delete
 
-  promote_to_production:
-    docker:
-      - image: amazon/aws-cli
-    steps:
-      - checkout
-      - run: | 
-          aws cloudformation deploy --template-file cloudfront.yml --stack-name cloudfront --parameter-overrides PipelineID="${canadcicd}" --region us-east-2
+  # promote_to_production:
+  #   docker:
+  #     - image: amazon/aws-cli
+  #   steps:
+  #     - checkout
+  #     - run: | 
+  #         aws cloudformation deploy --template-file cloudfront.yml --stack-name production-distro --parameter-overrides PipelineID="${canadcicd}" --region us-east-2
 
 workflows:
   SREDevops01_WF:
@@ -128,14 +128,14 @@ workflows:
       - smoke_test_1:
           requires:
             - create_infrastructure
-            
-      - promote_to_production
+
+      
       
       # - smoke_test_2:
       #     requires:
       #       - create_infrastructure
 
       # - create_and_deploy_front_end
-
+      
       # - promote_to_production:
       #      requires: [create_and_deploy_front_end]
