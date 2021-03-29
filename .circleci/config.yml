@@ -98,14 +98,14 @@ jobs:
   # Jobs to promote new environment to Production & decommission the old
   # environment in an automated process.
 
-  create_and_deploy_front_end:
-    docker:
-      - image: amazon/aws-cli
-    steps:
-      - checkout
-      - run: | 
-          aws cloudformation deploy --template-file bucket.yml --stack-name "${CIRCLE_WORKFLOW_ID:0:7}" --parameter-overrides PipelineId="${CIRCLE_WORKFLOW_ID:0:7}" --region us-east-2  
-      - run: aws s3  sync . s3://"${CIRCLE_WORKFLOW_ID}" --delete
+  # create_and_deploy_front_end:
+  #   docker:
+  #     - image: amazon/aws-cli
+  #   steps:
+  #     - checkout
+  #     - run: | 
+  #         aws cloudformation deploy --template-file bucket.yml --stack-name "${CIRCLE_WORKFLOW_ID:0:7}" --parameter-overrides PipelineId="${CIRCLE_WORKFLOW_ID:0:7}" --region us-east-2  
+  #     - run: aws s3  sync . s3://"${CIRCLE_WORKFLOW_ID}" --delete
 
   # promote_to_production:
   #   docker:
@@ -137,7 +137,7 @@ workflows:
       #     requires:
       #       - create_infrastructure
 
-      - create_and_deploy_front_end
+      # - create_and_deploy_front_end
 
       # - promote_to_production:
       #      requires: [create_and_deploy_front_end]
