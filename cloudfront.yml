@@ -20,7 +20,7 @@ Resources:
      #  Send a GET request to the /CloudFront API version/distribution ID/config resource.
       DistributionConfig:
         Origins:
-          - DomainName: !Sub "${PipelineID}.s3.amazonaws.com"
+          - DomainName: !Sub "${PipelineID}.s3-website.us-east-2.amazonaws.com" 
             Id: webpage
             S3OriginConfig:
               OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}"

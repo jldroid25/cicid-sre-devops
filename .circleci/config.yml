@@ -98,6 +98,31 @@ jobs:
   # Jobs to promote new environment to Production & decommission the old
   # environment in an automated process.
 
+  create_and_deploy_front_end:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run: | 
+          aws cloudformation deploy 
+          --template-file bucket.yml 
+          --stack-name "${CIRCLE_WORKFLOW_ID}" 
+          --parameter-overrides NAME="${CIRCLE_WORKFLOW_ID}"
+           --region us-east-2  
+      - run: aws s3  sync . s3://"${CIRCLE_WORKFLOW_ID}" --delete
+
+  # promote_to_production:
+  #   docker:
+  #     - image: amazon/aws-cli
+  #   steps:
+  #     - checkout
+  #     - run: | 
+  #         aws cloudformation deploy 
+  #         --template-file cloudformation.yml 
+  #         --stack-name cloudfront  
+  #         --parameter-overrides PipelineID="${canadcicd}" 
+  #         --region us-east-2
+
 workflows:
   SREDevops01_WF:
     jobs:
@@ -115,3 +140,8 @@ workflows:
       # - smoke_test_2:
       #     requires:
       #       - create_infrastructure
+
+      - create_and_deploy_front_end
+      
+      # - promote_to_production:
+      #      requires: [create_and_deploy_front_end]
