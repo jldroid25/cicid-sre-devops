@@ -54,7 +54,7 @@ jobs:
              fi 
       
   # here we are simulating a rollback/delete green environment on failure
-  # we go and delete/destroy the infra. stack on aws
+  # we go and delete/destroy the infrastructure  aws stack .
   # smoke_test_2:
   #   docker: 
   #     - image: amazon/aws-cli
@@ -67,6 +67,9 @@ jobs:
   #     - destroy_environment
          
   # a job to configure an Ec2 instance & copy production files
+  # Comment this job before create_infra job.
+  # then update host & inventory file with EC2 connection info 
+  # Then uncomment this job , code check , to perform server update.
   configure_infrastructure:
     # A docker Image with python installed which is needed for ansible to run.
     docker:
@@ -90,6 +93,10 @@ jobs:
           name: Configure server
           command: |
             ansible-playbook -i inventory playbook.yml -vvvv
+
+  # Promote to Production : Making the switch from old to new / Blue to Green ENV.
+  # Jobs to promote new environment to Production & decommission the old
+  # environment in an automated process.
 
 workflows:
   SREDevops01_WF:

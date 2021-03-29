@@ -1,0 +1,40 @@
+Parameters:
+  PipelineID:
+    Description: Unique identifier.
+    Type: String 
+
+Resources:
+
+  CloudFrontOriginAccessIdentity:
+    Type: "AWS::CloudFront::CloudFrontOriginAccessIdentity"
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: Origin Access Identity for Serverless Static Website
+
+  # Distribution tells CloudFront where we want content to be delivered, 
+  # the details about how to track, & manage content delivery
+  WebpageCDN:
+    Type: AWS::CloudFront::Distribution 
+    Properties:
+     # The current configuration info for the distribution
+     #  Send a GET request to the /CloudFront API version/distribution ID/config resource.
+      DistributionConfig:
+        Origins:
+          - DomainName: !Sub "${PipelineID}.s3.amazonaws.com"
+            Id: webpage
+            S3OriginConfig:
+              OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}"
+        Enabled: True 
+        DefaultRootObject: index.html
+        DefaultCacheBehavior:
+          ForwardedValues:
+            QueryString: False 
+          TargetOriginId: webpage
+          ViewerProtocolPolicy: allow-all
+
+Outputs: 
+  PipelineID:
+    Value: !Sub ${PipelineID}
+    Export:
+      Name: PipelineID
+      
